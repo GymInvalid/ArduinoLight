@@ -1,0 +1,29 @@
+int port = 13; //Порт, который отвечает за светодиод
+int port2 = 7; //Порт, в который подключена кнопка
+bool IsButtonUp; //Поднята ли кнопка
+bool WasButtonUp = true; //Была ли кнопка поднята
+bool lightEnabled = false; //Включен ли свет
+
+void setup()
+{
+  pinMode(port, OUTPUT); //Устаналиваем режим порта выход
+  pinMode(port2, INPUT); //Устаналиваем режим порта кнопки вход
+}
+
+void loop()
+{
+  IsButtonUp = digitalRead(port2); //Считываем значение кнопки
+  
+  if (WasButtonUp && !IsButtonUp) //Если была поднята, но опущена сечас
+  {
+    IsButtonUp = digitalRead(port2); //Считываем снова
+  	if (!IsButtonUp) //Если нажата
+    {
+        lightEnabled = !lightEnabled; //Включаем свет
+    	digitalWrite(port, lightEnabled); //Выдаем значение на 13 порт
+    }
+  }
+  else
+    digitalWrite(port, lightEnabled); //Отключаем при повторном нажатии
+    WasButtonUp = IsButtonUp; //Запоминаем состояние кнопки
+}
